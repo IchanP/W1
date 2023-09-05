@@ -1,0 +1,1 @@
+import './ladka-translator.js'
