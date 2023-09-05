@@ -10,25 +10,31 @@ template.innerHTML = `
 `
 
 class TranslationInput extends HTMLElement {
- 
 
-#translationInput    
-constructor () {
-    super()
-    this.attachShadow({mode: 'open' }).appendChild(template.content.cloneNode(true))
 
-    this.#translationInput = null
- }
+    #translationInput
+    constructor() {
+        super()
+        this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true))
 
- connectedCallback() {
-    this.form = this.shadowRoot.querySelector('form')
-    this.input = this.shadowRoout.querySelector('#translationInput')
+        this.#translationInput = null
+    }
 
-    this.form.addEventListener('submit', (event) => {
-        event.preventDefault()
-        if(this.input.value !== '') {
-            this.#translationInput = this.input.value
-        }
-    })
- }
+    connectedCallback() {
+        this.form = this.shadowRoot.querySelector('form')
+        this.input = this.shadowRoot.querySelector('#translationInput')
+
+        this.form.addEventListener('submit', (event) => {
+            event.preventDefault()
+            if (this.input.value !== '') {
+                console.log('Input event listener triggered')
+                this.#translationInput = this.input.value
+                const submitTranslation = new CustomEvent('submitTranslation', {data: {translationInput: this.#translationInput}})
+                this.dispatchEvent(submitTranslation)
+            }
+        })
+
+    }
 }
+
+customElements.define('ladka-input', TranslationInput)
